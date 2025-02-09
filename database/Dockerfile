@@ -1,9 +1,7 @@
-FROM postgres:latest
-
-ENV POSTGRES_DB=board_games_db
-ENV POSTGRES_USER=postgres
+FROM postgres:16.1
+ENV POSTGRES_USERNAME=postgres
 ENV POSTGRES_PASSWORD=postgres
 
-COPY dump.sql /docker-entrypoint-initdb.d/
+COPY dump.sql /docker-entrypoint-initdb.d/initdb.sql
 
 
