@@ -71,7 +71,9 @@ export default {
       try {
         const newGame = await gamesApi.addGame(this.newGame);
         this.games.push(newGame);
+        await this.loadGames();
         this.newGame = { name: '', minPlayers: 0, maxPlayers: 0 };
+        window.location.reload();
       } catch (error) {
         alert('Не удалось добавить игру.');
       }
