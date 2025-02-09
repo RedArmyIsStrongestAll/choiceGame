@@ -3,7 +3,7 @@
     <h2>🏆 Результаты</h2>
     <button @click="pickGame">Подобрать игру</button>
     <div v-if="bestGame">
-      <h3>Лучшая игра: {{ bestGame.name }}</h3>
+      <h3>Лучшая игра: {{ bestGame.gameName }}</h3>
       <p>Подходит для {{ bestGame.minPlayers }}-{{ bestGame.maxPlayers }} игроков.</p>
     </div>
     <div v-else>
@@ -51,3 +51,4 @@ export default {
   },
 };
 </script>
+

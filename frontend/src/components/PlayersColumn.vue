@@ -23,9 +23,9 @@
         <button @click="deletePlayer(player.id)">🗑️</button>
 
         <!-- Если есть рейтинги, то выводим их -->
-        <ul v-if="player.ratings && Object.keys(player.ratings).length > 0">
-          <li v-for="(rating, game) in player.ratings" :key="game">
-            {{ game }}: {{ ratingText[rating] }}
+        <ul v-if="player.ratingsById && Object.keys(player.ratingsById).length > 0">
+          <li v-for="(rating, gameId) in player.ratingsById" :key="gameId">
+            {{ gameId }}: {{ ratingText[rating] }}
           </li>
         </ul>
       </li>
@@ -38,7 +38,7 @@
 
         <div v-for="game in games" :key="game.id" class="game-rating">
           <span>{{ game.name }}</span>
-          <select v-model="newPlayer.ratings[game.id]">
+          <select v-model="newPlayer.ratingsById[game.id]">
             <option :value="null">Не выбрано</option>
             <option :value="3">Любимая</option>
             <option :value="2">Приятная</option>
@@ -67,7 +67,7 @@ export default {
       newPlayer: {
         name: '',
         willingToTryNew: false,
-        ratings: {},
+        ratingsById: {}, // Используем ratingsById вместо ratings
       },
       players: [],
       ratingText: {
@@ -89,6 +89,8 @@ export default {
         this.players = playersData.map(player => ({
           id: player.id,
           name: player.name,
+          willingToTryNew: player.willingToTryNew,
+          ratingsById: player.ratingsById || {}, // Обрабатываем рейтинг
         }));
       } catch (error) {
         alert('Не удалось загрузить список игроков.');
@@ -104,11 +106,15 @@ export default {
 
     async addPlayer() {
       try {
-        console.log(this.newPlayer)
-        await playersApi.addPlayer(this.newPlayer);
+        const playerData = {
+          name: this.newPlayer.name,
+          willingToTryNew: this.newPlayer.willingToTryNew,
+          ratingsById: this.newPlayer.ratingsById, // Передаем ratingsById
+        };
+        await playersApi.addPlayer(playerData);
         await this.loadPlayers();
         this.closeModal(); // Закрыть модальное окно после добавления игрока
-        this.newPlayer = { name: '', willingToTryNew: false, ratings: {} };
+        this.newPlayer = { name: '', willingToTryNew: false, ratingsById: {} };
       } catch (error) {
         // Выводим подробную информацию о том, что не так с запросом
         const errorMessage = error.response?.data?.detail || 'Не удалось добавить игрока.';
@@ -127,6 +133,7 @@ export default {
   },
 };
 </script>
+
 
 <style scoped>
 .column {
