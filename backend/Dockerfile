@@ -10,7 +10,7 @@ RUN ./mvnw dependency:go-offline
 
 COPY src ./src
 
-RUN ./mvnw clean package -DskipTests -P prod
+RUN ./mvnw clean package -DskipTests
 
 
 FROM openjdk:22-jdk-slim
