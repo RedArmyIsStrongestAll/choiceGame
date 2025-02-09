@@ -9,8 +9,9 @@ RUN chmod 777 -R /app && sed -i 's/\r$//' mvnw
 RUN ./mvnw dependency:go-offline
 
 COPY src ./src
+COPY applications ./applications
 
-RUN ./mvnw clean package -DskipTests
+RUN ./mvnw -P prod clean package -DskipTests
 
 
 FROM openjdk:22-jdk-slim
