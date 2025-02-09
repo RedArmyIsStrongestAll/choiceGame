@@ -68,4 +68,49 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<excludes>
+							<exclude>application.properties</exclude>
+						</excludes>
+					</resource>
+					<resource>
+						<directory>applications/dev</directory>
+						<includes>
+							<include>application.properties</include>
+						</includes>
+						<filtering>false</filtering>
+						<targetPath>BOOT-INF/classes</targetPath>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/resources</directory>
+						<excludes>
+							<exclude>application.properties</exclude>
+						</excludes>
+					</resource>
+					<resource>
+						<directory>applications/prod</directory>
+						<includes>
+							<include>application.properties</include>
+						</includes>
+						<filtering>false</filtering>
+						<targetPath>BOOT-INF/classes</targetPath>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+	</profiles>
+
 </project>

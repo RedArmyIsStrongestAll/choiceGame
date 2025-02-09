@@ -41,7 +41,7 @@ public class PlayerServiceImpl implements PlayerService {
         return playerRepository.addPlayer(newPlayer, gameRatings);
     }
 
-    public void deletePlayer(Long id) {
+    public void deletePlayer(Integer id) {
         playerRepository.deletePlayer(id);
     }
 }

@@ -37,7 +37,7 @@ public class Controller {
     }
 
     @DeleteMapping("/games/{id}")
-    public void deleteGame(@PathVariable Long id) {
+    public void deleteGame(@PathVariable Integer id) {
         gameService.deleteGame(id);
     }
 
@@ -47,7 +47,7 @@ public class Controller {
     }
 
     @DeleteMapping("/players/{id}")
-    public void deletePlayer(@PathVariable Long id) {
+    public void deletePlayer(@PathVariable Integer id) {
         playerService.deletePlayer(id);
     }
 

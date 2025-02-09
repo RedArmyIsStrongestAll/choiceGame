@@ -12,7 +12,7 @@ public interface GameService {
 
     void updateGame(Game game);
 
-    void deleteGame(Long id);
+    void deleteGame(Integer id);
 
     Game getGame(Integer id);
 }

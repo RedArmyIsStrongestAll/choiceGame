@@ -12,5 +12,5 @@ public interface PlayerRepository {
 
     Integer addPlayer(NewPlayer newPlayer, Map<Game, Integer> gameRatings);
 
-    void deletePlayer(Long id);
+    void deletePlayer(Integer id);
 }

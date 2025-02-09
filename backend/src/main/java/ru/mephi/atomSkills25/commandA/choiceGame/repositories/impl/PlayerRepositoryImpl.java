@@ -27,7 +27,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
         return id;
     }
 
-    public void deletePlayer(Long id) {
+    public void deletePlayer(Integer id) {
         players.remove(id);
     }
 }

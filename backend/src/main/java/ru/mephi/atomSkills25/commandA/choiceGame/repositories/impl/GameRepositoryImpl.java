@@ -58,7 +58,7 @@ public class GameRepositoryImpl implements GameRepository {
         }
     }
 
-    public void deleteGame(Long id) {
+    public void deleteGame(Integer id) {
         try {
             jdbcTemplate.update(DELETE_GAME, id);
         } catch (DataAccessException e) {

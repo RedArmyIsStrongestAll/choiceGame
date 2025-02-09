@@ -27,7 +27,7 @@ public class GameServiceImpl implements GameService {
         gameRepository.updateGame(game);
     }
 
-    public void deleteGame(Long id) {
+    public void deleteGame(Integer id) {
         gameRepository.deleteGame(id);
     }
 

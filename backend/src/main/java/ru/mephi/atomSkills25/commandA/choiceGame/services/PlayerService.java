@@ -10,5 +10,5 @@ public interface PlayerService {
 
     Integer addPlayer(NewPlayer newPlayer);
 
-    void deletePlayer(Long id);
+    void deletePlayer(Integer id);
 }
