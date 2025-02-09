@@ -45,20 +45,19 @@ export default {
           return;
         }
 
-        const numPlayers = this.players.length;
+        // const numPlayers = this.players.length;
 
-        const filteredGames = gamesWithPleasure.filter(
-          (game) =>
-            game.minPlayers !== undefined &&
-            game.maxPlayers !== undefined &&
-            game.minPlayers <= numPlayers &&
-            game.maxPlayers >= numPlayers
-        );
+        // const filteredGames = gamesWithPleasure.filter(
+        //   (game) =>
+        //     game.minPlayers !== undefined &&
+        //     game.maxPlayers !== undefined &&
+        //     game.minPlayers <= numPlayers &&
+        //     game.maxPlayers >= numPlayers
+        // );
 
-        console.log('Отфильтрованные игры:', filteredGames);
 
         this.bestGame =
-          filteredGames.sort((a, b) => b.totalPleasure - a.totalPleasure)[0] || null;
+          gamesWithPleasure.sort((a, b) => b.totalPleasure - a.totalPleasure)[0] || null;
 
         console.log('Выбранная игра:', this.bestGame);
       } catch (error) {

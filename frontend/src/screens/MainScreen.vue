@@ -29,6 +29,7 @@ export default {
     };
   },
   async created() {
+    console.log("yo");
     // Загружаем список игр и игроков при создании компонента
     await this.loadGames();
     await this.loadPlayers();
@@ -37,6 +38,7 @@ export default {
     // Метод для обработки добавления новой игры
     handleGameAdded(newGame) {
       this.games.push(newGame); // Добавляем новую игру в список
+      window.location.reload();
     },
 
     // Метод для загрузки списка игроков через API
@@ -65,3 +67,28 @@ export default {
   },
 };
 </script>
+
+<style>
+.main-screen {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+}
+
+.content {
+  display: flex;
+  gap: 20px;
+}
+
+.column {
+  flex: 1; /* Равномерное распределение ширины */
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+</style>

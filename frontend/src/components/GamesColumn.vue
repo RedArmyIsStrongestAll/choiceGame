@@ -69,6 +69,7 @@ export default {
     // Добавить игру
     async addGame() {
       try {
+        console.log("pzc");
         const newGame = await gamesApi.addGame(this.newGame);
         this.games.push(newGame);
         await this.loadGames();

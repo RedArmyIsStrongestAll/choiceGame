@@ -53,38 +53,41 @@
 </template>
 
 <script>
-import { watch, watchEffect } from 'vue';
-
+import { ref, watchEffect } from 'vue'; // Убрали onMounted
 import playersApi from '@/api/players';
-
+import gamesApi from '@/api/games';
 
 export default {
+  props: {
+    loadGames: Function,
+  },
+  setup() { // Убрали props, так как они не используются
+    const games = ref([]);
+    const newPlayer = ref({
+      name: '',
+      willingToTryNew: false,
+      ratingsById: {},
+    });
 
-
-watchEffect(() => {
-  // Когда изменяется список игр, добавляем их в newPlayer.ratingsById
-  if (Array.isArray(this.games)) {
-    this.games.forEach(game => {
-      if (!(game.id in this.newPlayer.ratingsById)) {
-        this.newPlayer.ratingsById[game.id] = null;
+    watchEffect(() => {
+      if (Array.isArray(games.value)) {
+        games.value.forEach(game => {
+          if (!(game.id in newPlayer.value.ratingsById)) {
+            newPlayer.value.ratingsById[game.id] = null;
+          }
+        });
       }
     });
-  }
-});
 
-  props: {
-    loadGames: Function, // Функция загрузки игр передается из MainScreen
+    return {
+      games,
+      newPlayer,
+    };
   },
   data() {
     return {
       isModalOpen: false,
-      newPlayer: {
-        name: '',
-        willingToTryNew: false,
-        ratingsById: {}, // Используем ratingsById вместо ratings
-      },
       players: [],
-      games: [], // Теперь храним игры здесь, а не в props
       ratingText: {
         3: 'Любимая',
         2: 'Приятная',
@@ -94,58 +97,57 @@ watchEffect(() => {
     };
   },
   async created() {
-    await this.loadPlayers();
+    try {
+      await this.loadPlayers();
+    } catch (error) {
+      console.error('Ошибка при загрузке игроков:', error);
+    }
   },
   methods: {
     async loadPlayers() {
       try {
         const playersData = await playersApi.getPlayers();
-        console.log(playersData);
         this.players = playersData.map(player => ({
           id: player.id,
           name: player.name,
           willingToTryNew: player.willingToTryNew,
-          ratingsById: player.ratingsById || {}, // Обрабатываем рейтинг
+          ratingsById: player.ratingsById || {},
         }));
       } catch (error) {
         alert('Не удалось загрузить список игроков.');
       }
     },
-
     async loadGames2() {
-        try {
-          this.games = await gamesApi.getGames();
-        } catch (error) {
-          alert('Не удалось загрузить список игр.');
-        }
-      },
-
+      try {
+        this.games = await gamesApi.getGames();
+      } catch (error) {
+        alert('Не удалось загрузить список игр.');
+      }
+    },
     openModal() {
-      this.loadGames2()
+      this.loadGames2();
       this.isModalOpen = true;
     },
     closeModal() {
       this.isModalOpen = false;
     },
-
     async addPlayer() {
       try {
         const playerData = {
           name: this.newPlayer.name,
           willingToTryNew: this.newPlayer.willingToTryNew,
-          ratingsById: this.newPlayer.ratingsById, // Передаем ratingsById
+          ratingsById: this.newPlayer.ratingsById,
         };
         await playersApi.addPlayer(playerData);
         await this.loadPlayers();
-        await this.loadGames(); // Загружаем новые игры, чтобы обновить их в списке
-        this.closeModal(); // Закрыть модальное окно после добавления игрока
+        await this.loadGames();
+        this.closeModal();
         this.newPlayer = { name: '', willingToTryNew: false, ratingsById: {} };
       } catch (error) {
         const errorMessage = error.response?.data?.detail || 'Не удалось добавить игрока.';
         alert(`Ошибка при добавлении игрока: ${errorMessage}`);
       }
     },
-
     async deletePlayer(id) {
       try {
         await playersApi.deletePlayer(id);
@@ -154,7 +156,6 @@ watchEffect(() => {
         alert('Не удалось удалить игрока.');
       }
     },
-
     getGameName(gameId) {
       const game = this.games.find(game => game.id === gameId);
       return game ? game.name : `Игра #${gameId}`;
@@ -170,3 +171,65 @@ watchEffect(() => {
   },
 };
 </script>
+
+<style scoped>
+.column {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+input, button, select {
+  margin: 5px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #42b983;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+}
+
+.game-rating {
+  margin-bottom: 10px;
+}
+</style>
