@@ -31,7 +31,6 @@ public class RatingServiceImpl implements RatingService {
             boolean shouldExclude = false;
 
             int countWeakScores = 0;
-            double weakScoreSum = 0;
 
             for (Player player : playerList) {
                 Map<Game, Integer> ratings = player.getRatings();
@@ -44,7 +43,6 @@ public class RatingServiceImpl implements RatingService {
                     }
                     if (score == 1) {
                         ++countWeakScores;
-                        weakScoreSum += 1;
                     } else {
                         totalScore += score;
                     }
@@ -60,7 +58,7 @@ public class RatingServiceImpl implements RatingService {
 
             if (!shouldExclude) {
                 if (countWeakScores > 0) {
-                    totalScore += weakScoreSum / (1 + Math.log(countWeakScores + 1));  // Применяем логарифмический штраф;
+                    totalScore += countWeakScores / (1 + Math.log(countWeakScores + 1));
                 }
                 gameScores.put(game, totalScore);
                 maxScore = Math.max(maxScore, totalScore);

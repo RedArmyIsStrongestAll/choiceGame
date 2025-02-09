@@ -13,3 +13,10 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+.DS_Store
+node_modules
+/dist
+
+.env.local
+.env.*.local
+
