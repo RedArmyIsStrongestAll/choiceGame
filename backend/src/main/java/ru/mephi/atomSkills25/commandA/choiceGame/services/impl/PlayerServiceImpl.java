@@ -28,13 +28,15 @@ public class PlayerServiceImpl implements PlayerService {
         Map<Game, Integer> gameRatings = new HashMap<>();
         for (Map.Entry<Integer, Integer> entry : newPlayer.getRatingsById().entrySet()) {
             int gameId = entry.getKey();
-            int rating = entry.getValue();
-            if (rating < 0 || rating > 4) {
-                return null;
-            }
-            Game game = gameService.getGame(gameId);
-            if (game != null) {
-                gameRatings.put(game, rating);
+            Integer rating = entry.getValue();
+            if (rating != null) {
+                if (rating < 0 || rating > 4) {
+                    return null;
+                }
+                Game game = gameService.getGame(gameId);
+                if (game != null) {
+                    gameRatings.put(game, rating);
+                }
             }
         }
 
